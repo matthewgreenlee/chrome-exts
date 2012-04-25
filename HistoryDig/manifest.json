@@ -1,0 +1,14 @@
+{
+  "name": "History Dig",
+  "version": "0.1",
+  "description": "get something interest about chrome history",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png"
+  },
+  "permissions": ["history", "tabs", "http://*/*", "https://*/*"],
+  "browser_action": {
+    "default_icon": "icon19.png",
+	"default_popup": "popup.html"
+  }
+}
