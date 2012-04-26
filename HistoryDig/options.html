@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>History Dig Options</title>
+<script type="text/javascript">
+function save_options() {
+  localStorage["transitionLink"] = document.getElementById("transitionLink").checked;
+  localStorage["transitionTyped"] = document.getElementById("transitionTyped").checked;
+  localStorage["transitionAutoBookmark"] = document.getElementById("transitionAutoBookmark").checked;
+  localStorage["transitionReload"] = document.getElementById("transitionReload").checked;
+  alert("options saved");
+}
+
+function restore_options() {
+  document.getElementById("transitionLink").checked = (localStorage["transitionLink"] === "true"? true: false);
+  document.getElementById("transitionTyped").checked = (localStorage["transitionTyped"] === "true"? true: false);
+  document.getElementById("transitionAutoBookmark").checked = (localStorage["transitionAutoBookmark"] === "true"? true: false);
+  document.getElementById("transitionReload").checked = (localStorage["transitionReload"] === "true"? true: false);
+}
+</script>
+</head>
+<body onload="restore_options()">
+<h1>Customize Your History Dig with Following Options</h1>
+<li><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
+<li><input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input></li>
+<li><input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input></li>
+<li><input id="transitionAutoSubframe" type="checkbox">loaded in a non-top-level frame</input></li>
+<li><input id="transitionManualSubframe" type="checkbox">subframes which are explicitly requested by the user</input></li>
+<li><input id="transitionGenerated" type="checkbox">by typing in the address bar and selecting an entry that did not look like a URL</input></li>
+<li><input id="transitionStartPage" type="checkbox">the page was specified in the command line or is the start page</input></li>
+<li><input id="transitionFormSubmit" type="checkbox">the user filled out values in a form and submitted it</input></li>
+<li><input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input></li>
+<li><input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input></li>
+<li><input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input></li>
+<button onclick="save_options()">Save</button>
+</body>
+</html>
