@@ -7,6 +7,12 @@ function save_options() {
   localStorage["transitionTyped"] = document.getElementById("transitionTyped").checked;
   localStorage["transitionAutoBookmark"] = document.getElementById("transitionAutoBookmark").checked;
   localStorage["transitionReload"] = document.getElementById("transitionReload").checked;
+  var timespanbtn = document.getElementsByName("timespanbtn");
+  for (var i in timespanbtn) {
+    if (timespanbtn[i].checked === true) {
+      localStorage["timespan"] = timespanbtn[i].value;
+	}
+  }
   alert("options saved");
 }
 
@@ -15,6 +21,8 @@ function restore_options() {
   document.getElementById("transitionTyped").checked = (localStorage["transitionTyped"] === "true"? true: false);
   document.getElementById("transitionAutoBookmark").checked = (localStorage["transitionAutoBookmark"] === "true"? true: false);
   document.getElementById("transitionReload").checked = (localStorage["transitionReload"] === "true"? true: false);
+  // below line does not work, either using selectedIndex
+  document.getElementById("tiemspan").value = localStorage["timespan"];
 }
 </script>
 </head>
@@ -31,6 +39,10 @@ function restore_options() {
 <li><input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input></li>
 <li><input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input></li>
 <li><input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input></li>
+<input id="timespan" type="radio" value="7" name="timespanbtn">1 week</input>
+<input id="timespan" type="radio" value="30" name="timespanbtn">1 Month</input>
+<input id="timespan" type="radio" value="90" name="timespanbtn">3 Monthes</input>
+
 <button onclick="save_options()">Save</button>
 </body>
 </html>
