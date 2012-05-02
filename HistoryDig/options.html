@@ -24,6 +24,23 @@ function restore_options() {
   // below line does not work, either using selectedIndex
   document.getElementById("tiemspan").value = localStorage["timespan"];
 }
+function generate_report() {
+  chrome.bookmarks.getTree(create_report);
+}
+
+function create_report(bookmarks) {
+  for(var i in bookmarks) {
+    if(bookmarks[i].url == undefined) {
+	  // in case of folder
+	  create_report(bookmarks[i].children);
+	} else {
+      var newdiv = document.createElement("div");
+      var newtext = document.createTextNode(bookmarks[i].url);
+      newdiv.appendChild(newtext);
+      document.getElementById("visitsReport").appendChild(newdiv);
+	}
+  }
+}
 </script>
 </head>
 <body onload="restore_options()">
@@ -44,5 +61,9 @@ function restore_options() {
 <input id="timespan" type="radio" value="90" name="timespanbtn">3 Monthes</input>
 
 <button onclick="save_options()">Save</button>
+<p>generate the visits report for your local bookmarks</p>
+<button onclick="generate_report()">Generate</button>
+<p>------------------------------------I'm the sperator------------------------------------</p>
+<div id="visitsReport"></div>
 </body>
 </html>
