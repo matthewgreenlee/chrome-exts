@@ -38,20 +38,35 @@ function restore_options() {
 }
 
 function generate_report() {
-  chrome.bookmarks.getTree(create_report_with_bookmarks);
+  chrome.bookmarks.getTree(create_bookmarks_report);
 }
 
 // generate report base on bookmarks tree
-function create_report_with_bookmarks(bookmarks) {
+function create_bookmarks_report(bookmarks) {
   for(var i in bookmarks) {
     if(bookmarks[i].url == undefined) {
 	  // in case of folder
-	  create_report_with_bookmarks(bookmarks[i].children);
+	  create_bookmarks_report(bookmarks[i].children);
+	} else if(bookmarks[i].url.indexOf("http://")!=0 && bookmarks[i].url.indexOf("https://")!=0) {
+	  // ignore if the bookmark is not url
 	} else {
       var newdiv = document.createElement("div");
-      var newtext = document.createTextNode(bookmarks[i].url);
-      newdiv.appendChild(newtext);
+	  var newid = document.createAttribute("id");
+	  newid.nodeValue = "bookmark"+bookmarks[i].id;
+	  newdiv.setAttributeNode(newid);
       document.getElementById("visitsReport").appendChild(newdiv);
+	  report_visits(bookmarks[i]);
 	}
   }
+}
+
+function report_visits(bm) {
+  chrome.history.getVisits({'url': bm.url}, 
+    function(visits) {
+	  if(visits.length === 0) {
+	    document.getElementById("bookmark"+bm.id).style.color = "red";
+	  }
+      var newtext = document.createTextNode(bm.title + "\t" + bm.url + "\t" + visits.length + " visits");;
+	  document.getElementById("bookmark"+bm.id).appendChild(newtext);
+    });
 }
