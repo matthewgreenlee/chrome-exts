@@ -1,14 +1,15 @@
 function show_message(elementId, message) {
+  clear_message(elementId);
   var msgdiv = document.getElementById(elementId);
   var msgtext = document.createTextNode(message);
   msgdiv.appendChild(msgtext);
-//  setTimeout(clear_message(elementId), 10000);
+//  setTimeout("", 1000);
 }
 
 function clear_message(elementId) {
-  var msgdiv = document.getElementById(elementId);
-  msgdiv.removeChild(msgdiv.childNodes[0]);
+  document.getElementById(elementId).innerHTML = "";
 }
+
 function save_options() {
   localStorage["transitionLink"] = document.getElementById("transitionLink").checked;
   localStorage["transitionTyped"] = document.getElementById("transitionTyped").checked;
@@ -38,6 +39,18 @@ function restore_options() {
 }
 
 function generate_report() {
+  // clear all content of visitsReport
+  document.getElementById("visitsReport").innerHTML = "";
+  var newtable = document.createElement("table");
+  newtable.setAttribute("border", "1");
+  /*
+  var newheader = document.createElement("tr");
+  newheader.appendChild(document.createElement("th").innerHTML = "Title");
+  newheader.appendChild(document.createElement("th").innerHTML = "URL");
+  newheader.appendChild(document.createElement("th").innerHTML = "Visits");
+  newtable.appendChild(newheader);
+  */
+  document.getElementById("visitsReport").appendChild(newtable);
   chrome.bookmarks.getTree(create_bookmarks_report);
 }
 
@@ -50,11 +63,9 @@ function create_bookmarks_report(bookmarks) {
 	} else if(bookmarks[i].url.indexOf("http://")!=0 && bookmarks[i].url.indexOf("https://")!=0) {
 	  // ignore if the bookmark is not url
 	} else {
-      var newdiv = document.createElement("div");
-	  var newid = document.createAttribute("id");
-	  newid.nodeValue = "bookmark"+bookmarks[i].id;
-	  newdiv.setAttributeNode(newid);
-      document.getElementById("visitsReport").appendChild(newdiv);
+      var newrow = document.createElement("tr");
+	  newrow.setAttribute("id", "bookmark"+bookmarks[i].id);
+      document.getElementById("visitsReport").firstChild.appendChild(newrow);
 	  report_visits(bookmarks[i]);
 	}
   }
@@ -66,7 +77,18 @@ function report_visits(bm) {
 	  if(visits.length === 0) {
 	    document.getElementById("bookmark"+bm.id).style.color = "red";
 	  }
-      var newtext = document.createTextNode(bm.title + "\t" + bm.url + "\t" + visits.length + " visits");;
-	  document.getElementById("bookmark"+bm.id).appendChild(newtext);
+	  var rowdiv = document.getElementById("bookmark" + bm.id);
+	  var newtitle = document.createElement("td");
+	  var newtext = document.createTextNode(bm.title);
+	  newtitle.appendChild(newtext);
+	  var newurl = document.createElement("td");
+	  newtext = document.createTextNode(bm.url);
+	  newurl.appendChild(newtext);
+	  var newvisits = document.createElement("td");
+	  newtext = document.createTextNode(visits.length + " visits");
+	  newvisits.appendChild(newtext);
+	  rowdiv.appendChild(newtitle);
+	  rowdiv.appendChild(newurl);
+	  rowdiv.appendChild(newvisits);
     });
 }
