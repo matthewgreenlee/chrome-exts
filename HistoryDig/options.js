@@ -43,13 +43,20 @@ function generate_report() {
   document.getElementById("visitsReport").innerHTML = "";
   var newtable = document.createElement("table");
   newtable.setAttribute("border", "1");
-  /*
   var newheader = document.createElement("tr");
-  newheader.appendChild(document.createElement("th").innerHTML = "Title");
-  newheader.appendChild(document.createElement("th").innerHTML = "URL");
-  newheader.appendChild(document.createElement("th").innerHTML = "Visits");
+  var newcell = document.createElement("th");
+  var newtext = document.createTextNode("Title");
+  newcell.appendChild(newtext);
+  newheader.appendChild(newcell);
+  newcell = document.createElement("th");
+  newtext = document.createTextNode("URL");
+  newcell.appendChild(newtext);
+  newheader.appendChild(newcell);
+  newcell = document.createElement("th");
+  newtext = document.createTextNode("Visits");
+  newcell.appendChild(newtext);
+  newheader.appendChild(newcell);
   newtable.appendChild(newheader);
-  */
   document.getElementById("visitsReport").appendChild(newtable);
   chrome.bookmarks.getTree(create_bookmarks_report);
 }
@@ -82,8 +89,12 @@ function report_visits(bm) {
 	  var newtext = document.createTextNode(bm.title);
 	  newtitle.appendChild(newtext);
 	  var newurl = document.createElement("td");
+	  newanchor = document.createElement("a");
+	  newanchor.setAttribute("href", bm.url);
+	  newanchor.setAttribute("target", "_blank");
 	  newtext = document.createTextNode(bm.url);
-	  newurl.appendChild(newtext);
+	  newanchor.appendChild(newtext);
+	  newurl.appendChild(newanchor);
 	  var newvisits = document.createElement("td");
 	  newtext = document.createTextNode(visits.length + " visits");
 	  newvisits.appendChild(newtext);
