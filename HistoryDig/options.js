@@ -48,6 +48,8 @@ function generate_report() {
   document.getElementById("visitsReport").innerHTML = "";
   var newtable = document.createElement("table");
   newtable.setAttribute("border", "1");
+  var newcaption = newtable.createCaption();
+  newcaption.innerHTML = "Bookmarks Visits Report";
   var newheader = document.createElement("tr");
   newheader.appendChild(create_classic_element("th", "Title"));
   newheader.appendChild(create_classic_element("th", "URL"));
