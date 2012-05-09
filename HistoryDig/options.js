@@ -7,7 +7,9 @@ function show_message(elementId, message) {
   var msgdiv = document.getElementById(elementId);
   var msgtext = document.createTextNode(message);
   msgdiv.appendChild(msgtext);
-//  setTimeout("", 1000);
+  setTimeout(function() {
+    document.getElementById(elementId).innerHTML = "";
+  }, 500);
 }
 
 function clear_message(elementId) {
