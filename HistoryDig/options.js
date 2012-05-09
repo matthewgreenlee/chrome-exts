@@ -1,3 +1,7 @@
+var transitionOptionIds = ["transitionLink", "transitionTyped", "transitionAutoBookmark",
+ "transitionAutoSubframe", "transitionManualSubframe", "transitionGenerated", "transitionStartPage", 
+ "transitionFormSubmit", "transitionReload", "transitionKeyword", "transitionKeywordGenerated"];
+
 function show_message(elementId, message) {
   clear_message(elementId);
   var msgdiv = document.getElementById(elementId);
@@ -11,10 +15,10 @@ function clear_message(elementId) {
 }
 
 function save_options() {
-  localStorage["transitionLink"] = document.getElementById("transitionLink").checked;
-  localStorage["transitionTyped"] = document.getElementById("transitionTyped").checked;
-  localStorage["transitionAutoBookmark"] = document.getElementById("transitionAutoBookmark").checked;
-  localStorage["transitionReload"] = document.getElementById("transitionReload").checked;
+  for(var i in transitionOptionIds) {
+    localStorage[transitionOptionIds[i]] = document.getElementById(transitionOptionIds[i]).checked;
+  }
+
   var nodes = document.getElementById("timespan").childNodes;
   for (var i in nodes) {
     if (nodes[i].checked === true) {
@@ -25,10 +29,9 @@ function save_options() {
 }
 
 function restore_options() {
-  document.getElementById("transitionLink").checked = (localStorage["transitionLink"] === "true"? true: false);
-  document.getElementById("transitionTyped").checked = (localStorage["transitionTyped"] === "true"? true: false);
-  document.getElementById("transitionAutoBookmark").checked = (localStorage["transitionAutoBookmark"] === "true"? true: false);
-  document.getElementById("transitionReload").checked = (localStorage["transitionReload"] === "true"? true: false);
+  for(var i in transitionOptionIds) {
+    document.getElementById(transitionOptionIds[i]).checked = (localStorage[transitionOptionIds[i]] === "true"? true: false);
+  }
 
   var nodes = document.getElementById("timespan").childNodes;
   for(var i in nodes) {

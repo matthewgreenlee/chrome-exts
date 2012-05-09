@@ -3,25 +3,27 @@
 	<title>History Dig Options</title>
 	<script type="text/javascript" src="options.js"></script>
 </head>
-<body onload="restore_options()">
+<body align="center" onload="restore_options()">
 	<h1>Customize Your History Dig with Following Options</h1>
-	<li><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
-	<li><input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input></li>
-	<li><input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input></li>
-	<li><input id="transitionAutoSubframe" type="checkbox">loaded in a non-top-level frame</input></li>
-	<li><input id="transitionManualSubframe" type="checkbox">subframes which are explicitly requested by the user</input></li>
-	<li><input id="transitionGenerated" type="checkbox">by typing in the address bar and selecting an entry that did not look like a URL</input></li>
-	<li><input id="transitionStartPage" type="checkbox">the page was specified in the command line or is the start page</input></li>
-	<li><input id="transitionFormSubmit" type="checkbox">the user filled out values in a form and submitted it</input></li>
-	<li><input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input></li>
-	<li><input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input></li>
-	<li><input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input></li>
+	<ul>
+		<li align="left"><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
+		<li align="left"><input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input></li>
+		<li align="left"><input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input></li>
+		<li align="left"><input id="transitionAutoSubframe" type="checkbox">loaded in a non-top-level frame</input></li>
+		<li align="left"><input id="transitionManualSubframe" type="checkbox">subframes which are explicitly requested by the user</input></li>
+		<li align="left"><input id="transitionGenerated" type="checkbox">by typing in the address bar and selecting an entry that did not look like a URL</input></li>
+		<li align="left"><input id="transitionStartPage" type="checkbox">the page was specified in the command line or is the start page</input></li>
+		<li align="left"><input id="transitionFormSubmit" type="checkbox">the user filled out values in a form and submitted it</input></li>
+		<li align="left"><input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input></li>
+		<li align="left"><input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input></li>
+		<li align="left"><input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input></li>
+	</ul>
 	<div id="timespan">
 		<input type="radio" value="7" name="timespanbtn">1 week</input>
 		<input type="radio" value="30" name="timespanbtn">1 Month</input>
 		<input type="radio" value="90" name="timespanbtn">3 Monthes</input>
 	</div>
-	<button onclick="save_options()">Save</button>
+	<button onclick="save_options()">Save Options</button>
 	<div id="save_options_msg"></div>
 	<h2>generate the visits report for your local bookmarks</h2>
 	<button onclick="generate_report()">Generate</button>
