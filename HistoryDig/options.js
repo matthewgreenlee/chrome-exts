@@ -44,18 +44,10 @@ function generate_report() {
   var newtable = document.createElement("table");
   newtable.setAttribute("border", "1");
   var newheader = document.createElement("tr");
-  var newcell = document.createElement("th");
-  var newtext = document.createTextNode("Title");
-  newcell.appendChild(newtext);
-  newheader.appendChild(newcell);
-  newcell = document.createElement("th");
-  newtext = document.createTextNode("URL");
-  newcell.appendChild(newtext);
-  newheader.appendChild(newcell);
-  newcell = document.createElement("th");
-  newtext = document.createTextNode("Visits");
-  newcell.appendChild(newtext);
-  newheader.appendChild(newcell);
+  newheader.appendChild(create_classic_element("th", "Title"));
+  newheader.appendChild(create_classic_element("th", "URL"));
+  newheader.appendChild(create_classic_element("th", "Visits"));
+  newheader.appendChild(create_classic_element("th", "Action"));
   newtable.appendChild(newheader);
   document.getElementById("visitsReport").appendChild(newtable);
   chrome.bookmarks.getTree(create_bookmarks_report);
@@ -85,21 +77,27 @@ function report_visits(bm) {
 	    document.getElementById("bookmark"+bm.id).style.color = "red";
 	  }
 	  var rowdiv = document.getElementById("bookmark" + bm.id);
-	  var newtitle = document.createElement("td");
-	  var newtext = document.createTextNode(bm.title);
-	  newtitle.appendChild(newtext);
-	  var newurl = document.createElement("td");
-	  newanchor = document.createElement("a");
+	  rowdiv.appendChild(create_classic_element("td", bm.title));
+	  var newcell = create_simple_element("td");
+	  var newanchor = create_classic_element("a", bm.url);
 	  newanchor.setAttribute("href", bm.url);
 	  newanchor.setAttribute("target", "_blank");
-	  newtext = document.createTextNode(bm.url);
-	  newanchor.appendChild(newtext);
-	  newurl.appendChild(newanchor);
-	  var newvisits = document.createElement("td");
-	  newtext = document.createTextNode(visits.length + " visits");
-	  newvisits.appendChild(newtext);
-	  rowdiv.appendChild(newtitle);
-	  rowdiv.appendChild(newurl);
-	  rowdiv.appendChild(newvisits);
+	  newcell.appendChild(newanchor);
+	  rowdiv.appendChild(newcell);
+	  rowdiv.appendChild(create_classic_element("td", visits.length + " visits"));
+	  newcell = create_simple_element("td");
+	  newcell.appendChild(create_classic_element("button", "Edit"));
+	  rowdiv.appendChild(newcell);
     });
+}
+
+function create_simple_element(tag) {
+  return document.createElement(tag);
+}
+
+function create_classic_element(tag, text) {
+  var elem = document.createElement(tag);
+  var textnode = document.createTextNode(text);
+  elem.appendChild(textnode);
+  return elem;
 }
