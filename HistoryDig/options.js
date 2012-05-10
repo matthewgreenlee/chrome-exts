@@ -2,7 +2,7 @@ var transitionOptionIds = ["transitionLink", "transitionTyped", "transitionAutoB
  "transitionAutoSubframe", "transitionManualSubframe", "transitionGenerated", "transitionStartPage", 
  "transitionFormSubmit", "transitionReload", "transitionKeyword", "transitionKeywordGenerated"];
 
-function show_message(elementId, message) {
+var show_message = function(elementId, message) {
   clear_message(elementId);
   var msgdiv = document.getElementById(elementId);
   var msgtext = document.createTextNode(message);
@@ -12,11 +12,11 @@ function show_message(elementId, message) {
   }, 500);
 }
 
-function clear_message(elementId) {
+var clear_message = function(elementId) {
   document.getElementById(elementId).innerHTML = "";
 }
 
-function save_options() {
+var saveOptions = function() {
   for(var i in transitionOptionIds) {
     localStorage[transitionOptionIds[i]] = document.getElementById(transitionOptionIds[i]).checked;
   }
@@ -30,7 +30,7 @@ function save_options() {
   show_message("save_options_msg", "options saved");
 }
 
-function restore_options() {
+var restoreOptions = function() {
   for(var i in transitionOptionIds) {
     document.getElementById(transitionOptionIds[i]).checked = (localStorage[transitionOptionIds[i]] === "true"? true: false);
   }
@@ -43,7 +43,7 @@ function restore_options() {
   }
 }
 
-function generate_report() {
+var generate_report = function() {
   // clear all content of visitsReport
   document.getElementById("visitsReport").innerHTML = "";
   var newtable = document.createElement("table");
@@ -61,7 +61,7 @@ function generate_report() {
 }
 
 // generate report base on bookmarks tree
-function create_bookmarks_report(bookmarks) {
+var create_bookmarks_report = function(bookmarks) {
   for(var i in bookmarks) {
     if(bookmarks[i].url == undefined) {
 	  // in case of folder
@@ -77,7 +77,7 @@ function create_bookmarks_report(bookmarks) {
   }
 }
 
-function report_visits(bm) {
+var report_visits = function(bm) {
   chrome.history.getVisits({'url': bm.url}, 
     function(visits) {
 	  if(visits.length === 0) {
@@ -98,11 +98,11 @@ function report_visits(bm) {
     });
 }
 
-function create_simple_element(tag) {
+var create_simple_element = function(tag) {
   return document.createElement(tag);
 }
 
-function create_classic_element(tag, text) {
+var create_classic_element = function(tag, text) {
   var elem = document.createElement(tag);
   var textnode = document.createTextNode(text);
   elem.appendChild(textnode);

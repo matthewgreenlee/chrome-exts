@@ -3,7 +3,7 @@
 	<title>History Dig Options</title>
 	<script type="text/javascript" src="options.js"></script>
 </head>
-<body align="center" onload="restore_options()">
+<body align="center" onload="restoreOptions()">
 	<h1>Customize Your History Dig with Following Options</h1>
 	<ul>
 		<li align="left"><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
@@ -23,7 +23,7 @@
 		<input type="radio" value="30" name="timespanbtn">1 Month</input>
 		<input type="radio" value="90" name="timespanbtn">3 Monthes</input>
 	</div>
-	<button onclick="save_options()">Save Options</button>
+	<button id="save" onclick="saveOptions()">Save Options</button>
 	<div id="save_options_msg"></div>
 	<h2>generate the visits report for your local bookmarks</h2>
 	<button onclick="generate_report()">Generate</button>
