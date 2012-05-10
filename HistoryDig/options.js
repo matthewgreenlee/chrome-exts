@@ -102,6 +102,7 @@ var report_visits = function(bm) {
 	  rowdiv.appendChild(create_classic_element("td", visits.length + " visits"));
 	  newcell = create_simple_element("td");
 	  newcell.appendChild(create_classic_element("button", "Edit"));
+	  newcell.appendChild(create_classic_element("button", "Delete"));
 	  rowdiv.appendChild(newcell);
     });
 }
