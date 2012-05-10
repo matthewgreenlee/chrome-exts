@@ -46,9 +46,14 @@ var restoreOptions = function() {
 }
 
 var generate_report = function() {
-  // clear all content of visitsReport
-  document.getElementById("visitsReport").innerHTML = "";
+  // remove the existing report table if exists
+  var oldtable = document.getElementById(Constants.REPORT_TABLE_ID);
+  if(oldtable !== null) {
+    document.body.removeChild(oldtable);
+  }
+  // construct the new report table
   var newtable = document.createElement("table");
+  newtable.setAttribute("id", Constants.REPORT_TABLE_ID);
   newtable.setAttribute("border", "1");
   var newcaption = newtable.createCaption();
   newcaption.innerHTML = "Bookmarks Visits Report";
@@ -58,7 +63,8 @@ var generate_report = function() {
   newheader.appendChild(create_classic_element("th", "Visits"));
   newheader.appendChild(create_classic_element("th", "Action"));
   newtable.appendChild(newheader);
-  document.getElementById("visitsReport").appendChild(newtable);
+  document.body.appendChild(newtable);
+  // fill the table with visit items
   chrome.bookmarks.getTree(create_bookmarks_report);
 }
 
@@ -73,7 +79,7 @@ var create_bookmarks_report = function(bookmarks) {
 	} else {
       var newrow = document.createElement("tr");
 	  newrow.setAttribute("id", "bookmark"+bookmarks[i].id);
-      document.getElementById("visitsReport").firstChild.appendChild(newrow);
+      document.body.lastChild.appendChild(newrow);
 	  report_visits(bookmarks[i]);
 	}
   }
@@ -109,4 +115,8 @@ var create_classic_element = function(tag, text) {
   var textnode = document.createTextNode(text);
   elem.appendChild(textnode);
   return elem;
+}
+
+var Constants = {
+  REPORT_TABLE_ID: "visitsReport"
 }
