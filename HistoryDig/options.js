@@ -16,18 +16,20 @@ var clear_message = function(elementId) {
   document.getElementById(elementId).innerHTML = "";
 }
 
-var saveOptions = function() {
-  for(var i in transitionOptionIds) {
-    localStorage[transitionOptionIds[i]] = document.getElementById(transitionOptionIds[i]).checked;
-  }
+var HistoryDig = {
+  saveOptions: function() {
+    for(var i in transitionOptionIds) {
+      localStorage[transitionOptionIds[i]] = document.getElementById(transitionOptionIds[i]).checked;
+    }
 
-  var nodes = document.getElementById("timespan").childNodes;
-  for (var i in nodes) {
-    if (nodes[i].checked === true) {
-      localStorage["timespan"] = nodes[i].value;
-	}
+    var nodes = document.getElementById("timespan").childNodes;
+    for (var i in nodes) {
+      if (nodes[i].checked === true) {
+        localStorage["timespan"] = nodes[i].value;
+	  }
+    }
+    show_message("save_options_msg", "options saved");
   }
-  show_message("save_options_msg", "options saved");
 }
 
 var restoreOptions = function() {
