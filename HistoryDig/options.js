@@ -2,8 +2,8 @@ var transitionOptionIds = ["transitionLink", "transitionTyped", "transitionAutoB
  "transitionAutoSubframe", "transitionManualSubframe", "transitionGenerated", "transitionStartPage", 
  "transitionFormSubmit", "transitionReload", "transitionKeyword", "transitionKeywordGenerated"];
 
-var show_message = function(elementId, message) {
-  clear_message(elementId);
+var showMessage = function(elementId, message) {
+  clearMessage(elementId);
   var msgdiv = document.getElementById(elementId);
   var msgtext = document.createTextNode(message);
   msgdiv.appendChild(msgtext);
@@ -12,7 +12,7 @@ var show_message = function(elementId, message) {
   }, 500);
 }
 
-var clear_message = function(elementId) {
+var clearMessage = function(elementId) {
   document.getElementById(elementId).innerHTML = "";
 }
 
@@ -28,7 +28,7 @@ var HistoryDig = {
         localStorage["timespan"] = nodes[i].value;
 	  }
     }
-    show_message("save_options_msg", "options saved");
+    showMessage("save_options_msg", "options saved");
   }
 }
 
@@ -58,74 +58,121 @@ var generate_report = function() {
   var newcaption = newtable.createCaption();
   newcaption.innerHTML = "Bookmarks Visits Report";
   var newheader = document.createElement("tr");
-  newheader.appendChild(create_classic_element("th", "Title"));
-  newheader.appendChild(create_classic_element("th", "URL"));
-  newheader.appendChild(create_classic_element("th", "Visits"));
-  newheader.appendChild(create_classic_element("th", "Action"));
+  newheader.appendChild(createClassicElement("th", "Title"));
+  newheader.appendChild(createClassicElement("th", "Location"));
+  newheader.appendChild(createClassicElement("th", "URL"));
+  newheader.appendChild(createClassicElement("th", "Visits"));
+  newheader.appendChild(createClassicElement("th", "Action"));
   newtable.appendChild(newheader);
   document.body.appendChild(newtable);
   // fill the table with visit items
-  chrome.bookmarks.getTree(create_bookmarks_report);
+  chrome.bookmarks.getTree(createBookmarkReport);
 }
 
 // generate report base on bookmarks tree
-var create_bookmarks_report = function(bookmarks) {
+var createBookmarkReport = function(bookmarks) {
   for(var i in bookmarks) {
     if(bookmarks[i].url == undefined) {
 	  // in case of folder
-	  create_bookmarks_report(bookmarks[i].children);
+	  createBookmarkReport(bookmarks[i].children);
 	} else if(bookmarks[i].url.indexOf("http://")!=0 && bookmarks[i].url.indexOf("https://")!=0) {
 	  // ignore if the bookmark is not url
 	} else {
       var newrow = document.createElement("tr");
 	  newrow.setAttribute("id", "bookmark"+bookmarks[i].id);
       document.body.lastChild.appendChild(newrow);
-	  report_visits(bookmarks[i]);
+	  reportVisits(bookmarks[i]);
 	}
   }
 }
 
-var report_visits = function(bm) {
+var reportVisits = function(bm) {
   chrome.history.getVisits({'url': bm.url}, 
     function(visits) {
 	  if(visits.length === 0) {
 	    document.getElementById("bookmark"+bm.id).style.color = "red";
 	  }
 	  var rowdiv = document.getElementById("bookmark" + bm.id);
-	  rowdiv.appendChild(create_classic_element("td", bm.title));
-	  var newcell = create_simple_element("td");
-	  var newanchor = create_classic_element("a", bm.url);
+	  rowdiv.appendChild(createClassicElement("td", bm.title));
+	  rowdiv.appendChild(createClassicElement("td", getBookmarkLocation(bm.id)));
+	  var newcell = createSimpleElement("td");
+	  var newanchor = createClassicElement("a", bm.url);
 	  newanchor.setAttribute("href", bm.url);
 	  newanchor.setAttribute("target", "_blank");
 	  newcell.appendChild(newanchor);
 	  rowdiv.appendChild(newcell);
-	  rowdiv.appendChild(create_classic_element("td", visits.length + " visits"));
-	  newcell = create_simple_element("td");
-	  newcell.appendChild(create_classic_element("button", "Edit"));
-	  var delbtn = create_simple_element("input");
+	  rowdiv.appendChild(createClassicElement("td", visits.length + " visits"));
+	  newcell = createSimpleElement("td");
+	  var editbtn = createSimpleElement("input");
+	  editbtn.setAttribute("type", "button");
+	  editbtn.setAttribute("value", "Edit");
+	  editbtn.addEventListener("click", editBookmarkItem);
+	  newcell.appendChild(editbtn);
+	  var savebtn = createSimpleElement("input");
+	  savebtn.setAttribute("type", "hidden");
+	  savebtn.setAttribute("value", "Save");
+	  savebtn.addEventListener("click", saveBookmarkItem);
+	  newcell.appendChild(savebtn);
+	  var delbtn = createSimpleElement("input");
 	  delbtn.setAttribute("type", "button");
 	  delbtn.setAttribute("value", "Delete");
-	  delbtn.onclick = deleteBookmarkItem;
+      delbtn.addEventListener("click", deleteBookmarkItem);
 	  newcell.appendChild(delbtn);
 	  rowdiv.appendChild(newcell);
     });
 }
 
+var getBookmarkLocation = function(id) {
+  return "to be decided location of bookmark " + id;
+}
+
+var saveBookmarkItem = function() {
+  var rowelem = this.parentElement.parentElement;
+  var bookmarkid = rowelem.getAttribute("id").substring("bookmark".length);
+  var titlecell = rowelem.firstChild;
+  var bookmarktitle = titlecell.firstChild.value;
+  chrome.bookmarks.update(bookmarkid, {
+    'title': bookmarktitle
+  }, function(bookmark) {
+    titlecell.innerHTML = bookmark.title;
+    var actioncell = rowelem.lastChild;
+    actioncell.children[0].setAttribute("type", "button");
+    actioncell.children[1].setAttribute("type", "hidden");
+  });
+}
+
+var editBookmarkItem = function() {
+  var rowelem = this.parentElement.parentElement;
+  var titlecell = rowelem.firstChild;
+  var newinput = createSimpleElement("input");
+  newinput.setAttribute("type", "text");
+  newinput.setAttribute("value", titlecell.innerHTML);
+  titlecell.innerHTML = "";
+  titlecell.appendChild(newinput);
+  var actioncell = rowelem.lastChild;
+  actioncell.children[1].setAttribute("type", "button");
+  this.setAttribute("type", "hidden");
+}
+
 var deleteBookmarkItem = function() {
-  confirm("Do you really want to delete the item from local bookmarks?");
+  var tobedel = confirm("Do you really want to delete below URL from bookmarks?\n");
+  if(!tobedel) {
+    return;
+  }
   var rowelem = this.parentElement.parentElement;
   var bookmarkid = rowelem.id.substring("bookmark".length);
   // remove item from local bookmarks
-  chrome.bookmarks.remove(bookmarkid, function() {alert("bookmark deleted");});
-  // delete table row from report table
-  rowelem.parentElement.removeChild(rowelem);
+  chrome.bookmarks.remove(bookmarkid, function() {
+    // delete table row from report table
+    rowelem.parentElement.removeChild(rowelem);
+  });
 }
 
-var create_simple_element = function(tag) {
+var createSimpleElement = function(tag) {
   return document.createElement(tag);
 }
 
-var create_classic_element = function(tag, text) {
+var createClassicElement = function(tag, text) {
   var elem = document.createElement(tag);
   var textnode = document.createTextNode(text);
   elem.appendChild(textnode);
