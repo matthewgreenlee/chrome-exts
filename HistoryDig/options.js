@@ -102,9 +102,23 @@ var report_visits = function(bm) {
 	  rowdiv.appendChild(create_classic_element("td", visits.length + " visits"));
 	  newcell = create_simple_element("td");
 	  newcell.appendChild(create_classic_element("button", "Edit"));
-	  newcell.appendChild(create_classic_element("button", "Delete"));
+	  var delbtn = create_simple_element("input");
+	  delbtn.setAttribute("type", "button");
+	  delbtn.setAttribute("value", "Delete");
+	  delbtn.onclick = deleteBookmarkItem;
+	  newcell.appendChild(delbtn);
 	  rowdiv.appendChild(newcell);
     });
+}
+
+var deleteBookmarkItem = function() {
+  confirm("Do you really want to delete the item from local bookmarks?");
+  var rowelem = this.parentElement.parentElement;
+  var bookmarkid = rowelem.id.substring("bookmark".length);
+  // remove item from local bookmarks
+  chrome.bookmarks.remove(bookmarkid, function() {alert("bookmark deleted");});
+  // delete table row from report table
+  rowelem.parentElement.removeChild(rowelem);
 }
 
 var create_simple_element = function(tag) {
