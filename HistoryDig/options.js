@@ -45,7 +45,7 @@ var restoreOptions = function() {
   }
 }
 
-var generate_report = function() {
+var generateReport = function() {
   // remove the existing report table if exists
   var oldtable = document.getElementById(Constants.REPORT_TABLE_ID);
   if(oldtable !== null) {
@@ -153,24 +153,28 @@ var editBookmarkItem = function() {
   var rowelem = this.parentElement.parentElement;
   // update title column
   var titlecell = rowelem.firstChild;
-  var newinput = createSimpleElement("input");
-  newinput.setAttribute("type", "text");
-  newinput.setAttribute("value", titlecell.innerHTML);
-  newinput.setAttribute("size", titlecell.innerHTML.length);
+  var text = titlecell.innerHTML;
   titlecell.innerHTML = "";
-  titlecell.appendChild(newinput);
+  titlecell.appendChild(createTextbox(text));
   // update url column
   var urlcell = titlecell.nextSibling.nextSibling;
-  var anotherinput = createClassicElement("input", urlcell.firstChild.text);
-  anotherinput.setAttribute("type", "text");
-  anotherinput.setAttribute("value", urlcell.firstChild.text);
-  anotherinput.setAttribute("size", urlcell.firstChild.text.length);
+  // url text is wrapped within <a> element
+  text = urlcell.firstChild.text;
   urlcell.innerHTML = "";
-  urlcell.appendChild(anotherinput);
+  urlcell.appendChild(createTextbox(text));
   // update action column
   var actioncell = rowelem.lastChild;
   actioncell.children[1].setAttribute("type", "button");
   this.setAttribute("type", "hidden");
+}
+
+// create a text box with given text
+var createTextbox = function(defaultText) {
+  var elem = createSimpleElement("input");
+  elem.setAttribute("type", "text");
+  elem.setAttribute("size", defaultText.length);
+  elem.value = defaultText;
+  return elem;
 }
 
 var deleteBookmarkItem = function() {
