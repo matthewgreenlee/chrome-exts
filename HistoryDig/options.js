@@ -131,10 +131,18 @@ var saveBookmarkItem = function() {
   var bookmarkid = rowelem.getAttribute("id").substring("bookmark".length);
   var titlecell = rowelem.firstChild;
   var bookmarktitle = titlecell.firstChild.value;
+  var urlcell = titlecell.nextSibling.nextSibling;
+  var bookmarkurl = urlcell.firstChild.value;
   chrome.bookmarks.update(bookmarkid, {
-    'title': bookmarktitle
+    'title': bookmarktitle,
+	'url': bookmarkurl
   }, function(bookmark) {
     titlecell.innerHTML = bookmark.title;
+	urlcell.innerHTML = "";
+	var newcell = createClassicElement("a", bookmark.url);
+	newcell.setAttribute("target", "_blank");
+	newcell.setAttribute("href", bookmark.url);
+	urlcell.appendChild(newcell);
     var actioncell = rowelem.lastChild;
     actioncell.children[0].setAttribute("type", "button");
     actioncell.children[1].setAttribute("type", "hidden");
@@ -143,12 +151,23 @@ var saveBookmarkItem = function() {
 
 var editBookmarkItem = function() {
   var rowelem = this.parentElement.parentElement;
+  // update title column
   var titlecell = rowelem.firstChild;
   var newinput = createSimpleElement("input");
   newinput.setAttribute("type", "text");
   newinput.setAttribute("value", titlecell.innerHTML);
+  newinput.setAttribute("size", titlecell.innerHTML.length);
   titlecell.innerHTML = "";
   titlecell.appendChild(newinput);
+  // update url column
+  var urlcell = titlecell.nextSibling.nextSibling;
+  var anotherinput = createClassicElement("input", urlcell.firstChild.text);
+  anotherinput.setAttribute("type", "text");
+  anotherinput.setAttribute("value", urlcell.firstChild.text);
+  anotherinput.setAttribute("size", urlcell.firstChild.text.length);
+  urlcell.innerHTML = "";
+  urlcell.appendChild(anotherinput);
+  // update action column
   var actioncell = rowelem.lastChild;
   actioncell.children[1].setAttribute("type", "button");
   this.setAttribute("type", "hidden");
