@@ -66,27 +66,27 @@ var generateReport = function() {
   newtable.appendChild(newheader);
   document.body.appendChild(newtable);
   // fill the table with visit items
-  chrome.bookmarks.getTree(createBookmarkReport);
+  chrome.bookmarks.getTree(buildBookmarkReport);
 }
 
 // generate report base on bookmarks tree
-var createBookmarkReport = function(bookmarks) {
+var buildBookmarkReport = function(bookmarks) {
   for(var i in bookmarks) {
     if(bookmarks[i].url == undefined) {
 	  // in case of folder
-	  createBookmarkReport(bookmarks[i].children);
+	  buildBookmarkReport(bookmarks[i].children);
 	} else if(bookmarks[i].url.indexOf(Constants.URL_PREFIX_HTTP)!=0 && bookmarks[i].url.indexOf(Constants.URL_PREFIX_HTTPS)!=0) {
 	  // ignore if the bookmark is not a valid url
 	} else {
       var newrow = document.createElement("tr");
 	  newrow.setAttribute("id", Constants.ID_PREFIX_BOOKMARK+bookmarks[i].id);
       document.body.lastChild.appendChild(newrow);
-	  reportVisits(bookmarks[i]);
+	  buildBookmarkItem(bookmarks[i]);
 	}
   }
 }
 
-var reportVisits = function(bm) {
+var buildBookmarkItem = function(bm) {
   chrome.history.getVisits({'url': bm.url}, 
     function(visits) {
 	  if(visits.length === 0) {
@@ -94,7 +94,7 @@ var reportVisits = function(bm) {
 	  }
 	  var rowElem = document.getElementById(Constants.ID_PREFIX_BOOKMARK + bm.id);
 	  rowElem.appendChild(createClassicElement(Constants.HTML_TAG_TD, bm.title));
-	  rowElem.appendChild(createClassicElement(Constants.HTML_TAG_TD, getBookmarkLocation(bm.id)));
+      buildBookmarkLocation(bm.id);
 	  var urlCell = createSimpleElement(Constants.HTML_TAG_TD);
 	  urlCell.appendChild(createAnchor(bm.url, bm.url, "_blank"));
 	  rowElem.appendChild(urlCell);
@@ -107,13 +107,16 @@ var reportVisits = function(bm) {
     });
 }
 
-var getBookmarkLocation = function(id) {
-  return "to be decided location of bookmark " + id;
+var buildBookmarkLocation = function(id) {
+  chrome.bookmarks.get(id, function(results) {
+    var rowElem = document.getElementById(Constants.ID_PREFIX_BOOKMARK + id);
+	rowElem.insertBefore(createClassicElement(Constants.HTML_TAG_TD, results[0].parentId), rowElem.firstChild.nextSibling);
+  });
 }
 
 var saveBookmarkItem = function() {
   var rowelem = this.parentElement.parentElement;
-  var bookmarkid = rowelem.getAttribute("id").substring(Constants.ID_PREFIX_BOOKMARK.length);
+  var bookmarkid = rowelem.id.substring(Constants.ID_PREFIX_BOOKMARK.length);
   var titlecell = rowelem.firstChild;
   var bookmarktitle = titlecell.firstChild.value;
   var urlcell = titlecell.nextSibling.nextSibling;
