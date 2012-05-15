@@ -2,6 +2,8 @@ var transitionOptionIds = ["transitionLink", "transitionTyped", "transitionAutoB
  "transitionAutoSubframe", "transitionManualSubframe", "transitionGenerated", "transitionStartPage", 
  "transitionFormSubmit", "transitionReload", "transitionKeyword", "transitionKeywordGenerated"];
 
+var bookmarkFolders = [];
+
 var showMessage = function(elementId, message) {
   clearMessage(elementId);
   var msgdiv = document.getElementById(elementId);
@@ -74,6 +76,10 @@ var buildBookmarkReport = function(bookmarks) {
   for(var i in bookmarks) {
     if(bookmarks[i].url == undefined) {
 	  // in case of folder
+	  bookmarkFolders.push({
+	    'id': bookmarks[i].id,
+		'title': bookmarks[i].title
+	  });
 	  buildBookmarkReport(bookmarks[i].children);
 	} else if(bookmarks[i].url.indexOf(Constants.URL_PREFIX_HTTP)!=0 && bookmarks[i].url.indexOf(Constants.URL_PREFIX_HTTPS)!=0) {
 	  // ignore if the bookmark is not a valid url
@@ -110,8 +116,16 @@ var buildBookmarkItem = function(bm) {
 var buildBookmarkLocation = function(id) {
   chrome.bookmarks.get(id, function(results) {
     var rowElem = document.getElementById(Constants.ID_PREFIX_BOOKMARK + id);
-	rowElem.insertBefore(createClassicElement(Constants.HTML_TAG_TD, results[0].parentId), rowElem.firstChild.nextSibling);
+	rowElem.insertBefore(createClassicElement(Constants.HTML_TAG_TD, getBookmarkFolderTitle(results[0].parentId)), rowElem.firstChild.nextSibling);
   });
+}
+
+var getBookmarkFolderTitle = function(id) {
+  for(var i in bookmarkFolders) {
+    if(id === bookmarkFolders[i].id) {
+	  return bookmarkFolders[i].title;
+	}
+  }
 }
 
 var saveBookmarkItem = function() {
