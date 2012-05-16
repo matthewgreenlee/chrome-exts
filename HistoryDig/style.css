@@ -4,7 +4,7 @@ padding:0 17% 0 17%;
 }
 table
 {
-border:1px solid green;
+border:1px solid #ABC;
 border-collapse:collapse;
 margin-top:50px;
 margin-bottom:50px;
@@ -20,4 +20,14 @@ padding:5px 15px 5px 15px;
 margin-left:auto;
 margin-right:auto;
 text-align:center;
+}
+#optionsBody
+{
+border:1px solid #ABC;
+padding:15px 5px 15px 5px;
+}
+ul
+{
+margin-top:0;
+margin-bottom:0;
 }
