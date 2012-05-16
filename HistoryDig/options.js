@@ -169,11 +169,11 @@ var editBookmarkItem = function() {
 }
 
 var deleteBookmarkItem = function() {
-  var toBeDel = confirm("Do you really want to delete below URL from bookmarks?\n");
+  var rowelem = this.parentElement.parentElement;
+  var toBeDel = confirm("Do you really want to delete below URL from bookmarks?\n" + rowelem.children[2].firstChild.text);
   if(!toBeDel) {
     return;
   }
-  var rowelem = this.parentElement.parentElement;
   var bookmarkid = rowelem.id.substring(Constants.ID_PREFIX_BOOKMARK.length);
   // remove item from local bookmarks
   chrome.bookmarks.remove(bookmarkid, function() {
