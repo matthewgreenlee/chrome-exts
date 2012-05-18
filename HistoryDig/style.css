@@ -1,9 +1,12 @@
-body
-{
+/* generic html tag style */
+body {
 padding:0 17% 0 17%;
 }
-table
-{
+ul {
+margin-top:0;
+margin-bottom:0;
+}
+table {
 border:1px solid #ABC;
 border-collapse:collapse;
 margin-top:50px;
@@ -11,23 +14,23 @@ margin-bottom:50px;
 margin-left:3%;
 margin-right:3%;
 }
-td, th
-{
+td, th {
 padding:5px 15px 5px 15px;
 }
-.center
-{
+
+/* generic class style */
+.center {
 margin-left:auto;
 margin-right:auto;
 text-align:center;
 }
-#optionsBody
-{
+.left {
+}
+.right {
+}
+
+/* specific element style */
+#optionsBody {
 border:1px solid #ABC;
 padding:15px 5px 15px 5px;
-}
-ul
-{
-margin-top:0;
-margin-bottom:0;
 }
