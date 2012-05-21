@@ -31,6 +31,10 @@ var HistoryDig = {
 	  }
     }
     showMessage("save_options_msg", "options saved");
+	// if the option was checked, show report
+	if (true === document.getElementById("showReport").checked) {
+	  generateReport();
+	}
   }
 }
 

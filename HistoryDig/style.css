@@ -5,14 +5,17 @@ padding:0 17% 0 17%;
 ul {
 margin-top:0;
 margin-bottom:0;
+list-style-type:none;
+}
+table, th, td {
+border:1px solid #ABC;
 }
 table {
-border:1px solid #ABC;
 border-collapse:collapse;
 margin-top:50px;
 margin-bottom:50px;
 }
-td, th {
+th, td {
 padding:5px 15px 5px 15px;
 }
 
@@ -31,4 +34,7 @@ text-align:center;
 #optionsBody {
 border:1px solid #ABC;
 padding:15px 5px 15px 5px;
+}
+#wb_follow_btn {
+display: block;
 }
