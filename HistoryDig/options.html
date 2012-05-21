@@ -8,13 +8,11 @@
 <body onload="restoreOptions()">
 	<table id="optionsBody" class="center">
 		<tr>
-			<th colspan="2">
-				<h1>History Dig Options</h1>
-			</th>
+			<th colspan="2">History Dig Options</th>
 		</tr>
 		<tr>
 			<td>
-				<ul>
+				<ul class="left">
 					<li><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
 					<li><input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input></li>
 					<li><input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input></li>
@@ -34,13 +32,14 @@
 					<input type="radio" value="30" name="timespanbtn">1 Month</input>
 					<input type="radio" value="90" name="timespanbtn">3 Monthes</input>
 				</div>
-				<input id="showReport" type="checkbox">always show visits report</input>
+				<hr>
+				<input id="showReport" type="checkbox">show visits report</input>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<input id="save" type="button" onclick="HistoryDig.saveOptions()" value="Save"></button>
-				<input id="close" type="button" onclick="HistoryDig.close()" value="Close"></button>
+			<td colspan="2" class="right">
+				<input id="save" type="button" class="button" onclick="HistoryDig.saveOptions()" value="Save"></button>
+				<input id="close" type="button" class="button" onclick="HistoryDig.close()" value="Close"></button>
 			</td>
 		</tr>
 	</table>

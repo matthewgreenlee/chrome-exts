@@ -34,7 +34,15 @@ var HistoryDig = {
 	// if the option was checked, show report
 	if (true === document.getElementById("showReport").checked) {
 	  generateReport();
+	} else {
+      var oldtable = document.getElementById(Constants.REPORT_TABLE_ID);
+      if(oldtable !== null) {
+        document.body.removeChild(oldtable);
+      }
 	}
+  },
+  close: function() {
+    window.close();
   }
 }
 

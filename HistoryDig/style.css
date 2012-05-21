@@ -3,9 +3,11 @@ body {
 padding:0 17% 0 17%;
 }
 ul {
-margin-top:0;
-margin-bottom:0;
 list-style-type:none;
+padding-left:20px;
+}
+li {
+padding: 3px 0;
 }
 table, th, td {
 border:1px solid #ABC;
@@ -14,9 +16,13 @@ table {
 border-collapse:collapse;
 margin-top:50px;
 margin-bottom:50px;
+color:#567;
 }
 th, td {
 padding:5px 15px 5px 15px;
+}
+th {
+font-size:30px;
 }
 
 /* generic class style */
@@ -26,13 +32,22 @@ margin-right:auto;
 text-align:center;
 }
 .left {
+float:left;
+text-align:left;
 }
 .right {
+float:right;
+text-align:right;
+}
+.button {
+min-width:120px;
+min-height:33px;
+color:#567;
 }
 
 /* specific element style */
 #optionsBody {
-border:1px solid #ABC;
+border:1px solid;
 padding:15px 5px 15px 5px;
 }
 #wb_follow_btn {
