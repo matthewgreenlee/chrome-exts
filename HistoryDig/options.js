@@ -69,14 +69,12 @@ var generateReport = function() {
   var newtable = document.createElement("table");
   newtable.setAttribute("id", Constants.REPORT_TABLE_ID);
   newtable.setAttribute("border", "1");
-  var newcaption = newtable.createCaption();
-  newcaption.innerHTML = "Bookmarks Visits Report";
   var newheader = document.createElement("tr");
-  newheader.appendChild(createClassicElement(Constants.HTML_TAG_TH, "Title"));
-  newheader.appendChild(createClassicElement(Constants.HTML_TAG_TH, "Location"));
-  newheader.appendChild(createClassicElement(Constants.HTML_TAG_TH, "URL"));
-  newheader.appendChild(createClassicElement(Constants.HTML_TAG_TH, "Visits"));
-  newheader.appendChild(createClassicElement(Constants.HTML_TAG_TH, "Action"));
+  newheader.appendChild(createElementWithText(Constants.HTML_TAG_TH, "Title"));
+  newheader.appendChild(createElementWithText(Constants.HTML_TAG_TH, "Location"));
+  newheader.appendChild(createElementWithText(Constants.HTML_TAG_TH, "URL"));
+  newheader.appendChild(createElementWithText(Constants.HTML_TAG_TH, "Visits"));
+  newheader.appendChild(createElementWithText(Constants.HTML_TAG_TH, "Action"));
   newtable.appendChild(newheader);
   document.body.appendChild(newtable);
   // fill the table with visit items
@@ -111,12 +109,12 @@ var buildBookmarkItem = function(bm) {
 	    document.getElementById(Constants.ID_PREFIX_BOOKMARK+bm.id).style.color = "red";
 	  }
 	  var rowElem = document.getElementById(Constants.ID_PREFIX_BOOKMARK + bm.id);
-	  rowElem.appendChild(createClassicElement(Constants.HTML_TAG_TD, bm.title));
+	  rowElem.appendChild(createElementWithText(Constants.HTML_TAG_TD, bm.title));
       buildBookmarkLocation(bm.id);
 	  var urlCell = createSimpleElement(Constants.HTML_TAG_TD);
 	  urlCell.appendChild(createAnchor(bm.url, bm.url, "_blank"));
 	  rowElem.appendChild(urlCell);
-	  rowElem.appendChild(createClassicElement(Constants.HTML_TAG_TD, visits.length));
+	  rowElem.appendChild(createElementWithText(Constants.HTML_TAG_TD, visits.length));
 	  var actionCell = createSimpleElement(Constants.HTML_TAG_TD);
 	  actionCell.appendChild(createButton("Edit", editBookmarkItem, false));
 	  actionCell.appendChild(createButton("Save", saveBookmarkItem, true));
@@ -128,7 +126,7 @@ var buildBookmarkItem = function(bm) {
 var buildBookmarkLocation = function(id) {
   chrome.bookmarks.get(id, function(results) {
     var rowElem = document.getElementById(Constants.ID_PREFIX_BOOKMARK + id);
-	rowElem.insertBefore(createClassicElement(Constants.HTML_TAG_TD, getBookmarkFolderTitle(results[0].parentId)), rowElem.firstChild.nextSibling);
+	rowElem.insertBefore(createElementWithText(Constants.HTML_TAG_TD, getBookmarkFolderTitle(results[0].parentId)), rowElem.firstChild.nextSibling);
   });
 }
 
@@ -195,7 +193,7 @@ var deleteBookmarkItem = function() {
 }
 
 var createAnchor = function(text, url, target) {
-  var a = createClassicElement(Constants.HTML_TAG_A, text);
+  var a = createElementWithText(Constants.HTML_TAG_A, text);
   a.setAttribute("href", url);
   a.setAttribute("target", target);
   return a;
@@ -222,7 +220,7 @@ var createSimpleElement = function(tag) {
   return document.createElement(tag);
 }
 
-var createClassicElement = function(tag, text) {
+var createElementWithText = function(tag, text) {
   var elem = document.createElement(tag);
   var textnode = document.createTextNode(text);
   elem.appendChild(textnode);
