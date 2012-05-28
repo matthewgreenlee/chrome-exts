@@ -1,48 +1,73 @@
 <html>
-<head>
-	<title>History Dig Options</title>
-	<link rel="stylesheet" type="text/css" href="style.css" />
-	<script src=" http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3168919025" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" src="options.js"></script>
-</head>
-<body onload="restoreOptions()">
-	<table id="optionsBody" class="center">
-		<tr>
-			<th colspan="2">History Dig Options</th>
-		</tr>
-		<tr>
-			<td width="67%">
-				<ul class="left">
-					<li><input id="transitionLink" type="checkbox">by clicking a link on another page</input></li>
-					<li><input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input></li>
-					<li><input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input></li>
-					<li><input id="transitionAutoSubframe" type="checkbox">loaded in a non-top-level frame</input></li>
-					<li><input id="transitionManualSubframe" type="checkbox">subframes which are explicitly requested by the user</input></li>
-					<li><input id="transitionGenerated" type="checkbox">by typing in the address bar and selecting an entry that did not look like a URL</input></li>
-					<li><input id="transitionStartPage" type="checkbox">the page was specified in the command line or is the start page</input></li>
-					<li><input id="transitionFormSubmit" type="checkbox">the user filled out values in a form and submitted it</input></li>
-					<li><input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input></li>
-					<li><input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input></li>
-					<li><input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input></li>
-				</ul>
-			</td>
-			<td>
-				<div id="timespan">
-					<input type="radio" value="7" name="timespanbtn">1 week</input>
-					<input type="radio" value="30" name="timespanbtn">1 Month</input>
-					<input type="radio" value="90" name="timespanbtn">3 Monthes</input>
-				</div>
-				<hr>
-				<input id="showReport" type="checkbox">show visits report</input>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="right">
-				<input id="save" type="button" class="button" onclick="HistoryDig.saveOptions()" value="Save"></button>
-				<input id="close" type="button" class="button" onclick="HistoryDig.close()" value="Close"></button>
-			</td>
-		</tr>
-	</table>
-	<div id="save_options_msg"></div>
-</body>
+  
+  <head>
+    <title>History Dig Options</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src=" http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3168919025" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="options.js"></script>
+  </head>
+  
+  <body onload="restoreOptions()">
+    <table id="optionsBody" class="center">
+      <tr>
+        <th colspan="2">History Dig Options</th>
+      </tr>
+      <tr>
+        <td width="67%">
+          <ul class="left">
+            <li>
+              <input id="transitionLink" type="checkbox">by clicking a link on another page</input>
+            </li>
+            <li>
+              <input id="transitionTyped" type="checkbox">by typing the URL in the address bar</input>
+            </li>
+            <li>
+              <input id="transitionAutoBookmark" type="checkbox">through a suggestion in the UI</input>
+            </li>
+            <li>
+              <input id="transitionAutoSubframe" type="checkbox">loaded in a non-top-level frame</input>
+            </li>
+            <li>
+              <input id="transitionManualSubframe" type="checkbox">subframes which are explicitly requested by the user</input>
+            </li>
+            <li>
+              <input id="transitionGenerated" type="checkbox">by typing in the address bar and selecting an entry that did not look like a URL</input>
+            </li>
+            <li>
+              <input id="transitionStartPage" type="checkbox">the page was specified in the command line or is the start page</input>
+            </li>
+            <li>
+              <input id="transitionFormSubmit" type="checkbox">the user filled out values in a form and submitted it</input>
+            </li>
+            <li>
+              <input id="transitionReload" type="checkbox">either by clicking the reload button or by pressing Enter in the address bar</input>
+            </li>
+            <li>
+              <input id="transitionKeyword" type="checkbox">the URL was generated from a replaceable keyword other than the default search provider</input>
+            </li>
+            <li>
+              <input id="transitionKeywordGenerated" type="checkbox">Corresponds to a visit generated for a keyword</input>
+            </li>
+          </ul>
+        </td>
+        <td>
+          <div id="timespan">
+            <input type="radio" value="7" name="timespanbtn">1 week</input>
+            <input type="radio" value="30" name="timespanbtn">1 Month</input>
+            <input type="radio" value="90" name="timespanbtn">3 Monthes</input>
+          </div>
+          <hr>
+          <input id="showReport" type="checkbox">show visits report</input>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="right">
+          <input id="save" type="button" class="button" onclick="HistoryDig.saveOptions()" value="Save" />
+          <input id="close" type="button" class="button" onclick="HistoryDig.close()" value="Close" />
+        </td>
+      </tr>
+    </table>
+    <div id="save_options_msg"></div>
+  </body>
+
 </html>
