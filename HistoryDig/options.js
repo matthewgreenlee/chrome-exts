@@ -10,20 +10,6 @@ window.onload = function() {
   document.getElementById("close").addEventListener(Constants.HTML_EVENT_CLICK, HistoryDig.close);
 }
 
-var showMessage = function(elementId, message) {
-  clearMessage(elementId);
-  var msgdiv = document.getElementById(elementId);
-  var msgtext = document.createTextNode(message);
-  msgdiv.appendChild(msgtext);
-  setTimeout(function() {
-    document.getElementById(elementId).innerHTML = "";
-  }, 500);
-}
-
-var clearMessage = function(elementId) {
-  document.getElementById(elementId).innerHTML = "";
-}
-
 var HistoryDig = {
   saveOptions: function() {
     for(var i in transitionOptionIds) {
@@ -36,7 +22,7 @@ var HistoryDig = {
         localStorage["timespan"] = nodes[i].value;
 	  }
     }
-    showMessage("save_options_msg", "options saved");
+    HistoryDig.showMessage("save_options_msg", "options saved");
 	// if the option was checked, show report
 	if (true === document.getElementById("showReport").checked) {
 	  generateReport();
@@ -61,7 +47,20 @@ var HistoryDig = {
         nodes[i].checked = true;
       }
     }
+  },
+  showMessage: function(elementId, message) {
+    HistoryDig.clearMessage(elementId);
+    var msgdiv = document.getElementById(elementId);
+    var msgtext = document.createTextNode(message);
+    msgdiv.appendChild(msgtext);
+    setTimeout(function() {
+      document.getElementById(elementId).innerHTML = "";
+    }, 500);
+  },
+  clearMessage: function(elementId) {
+    document.getElementById(elementId).innerHTML = "";
   }
+
 }
 
 var generateReport = function() {
