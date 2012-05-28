@@ -4,6 +4,12 @@ var transitionOptionIds = ["transitionLink", "transitionTyped", "transitionAutoB
 
 var bookmarkFolders = [];
 
+window.onload = function() {
+  HistoryDig.restoreOptions();
+  document.getElementById("save").addEventListener(Constants.HTML_EVENT_CLICK, HistoryDig.saveOptions);
+  document.getElementById("close").addEventListener(Constants.HTML_EVENT_CLICK, HistoryDig.close);
+}
+
 var showMessage = function(elementId, message) {
   clearMessage(elementId);
   var msgdiv = document.getElementById(elementId);
@@ -43,18 +49,17 @@ var HistoryDig = {
   },
   close: function() {
     window.close();
-  }
-}
+  },
+  restoreOptions: function() {
+    for(var i in transitionOptionIds) {
+      document.getElementById(transitionOptionIds[i]).checked = (localStorage[transitionOptionIds[i]] === "true"? true: false);
+    }
 
-var restoreOptions = function() {
-  for(var i in transitionOptionIds) {
-    document.getElementById(transitionOptionIds[i]).checked = (localStorage[transitionOptionIds[i]] === "true"? true: false);
-  }
-
-  var nodes = document.getElementById("timespan").childNodes;
-  for(var i in nodes) {
-    if (nodes[i].value == localStorage["timespan"]) {
-      nodes[i].checked = true;
+    var nodes = document.getElementById("timespan").childNodes;
+    for(var i in nodes) {
+      if (nodes[i].value == localStorage["timespan"]) {
+        nodes[i].checked = true;
+      }
     }
   }
 }
