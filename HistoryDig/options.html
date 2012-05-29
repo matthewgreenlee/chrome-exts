@@ -3,7 +3,8 @@
   <head>
     <title>History Dig Options</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="options.js" charset="utf-8"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="options_jquery.js"></script>
   </head>
   
   <body>
@@ -50,11 +51,9 @@
           </ul>
         </td>
         <td>
-          <div id="timespan">
-            <input type="radio" value="7" name="timespanbtn">1 week</input>
-            <input type="radio" value="30" name="timespanbtn">1 Month</input>
-            <input type="radio" value="90" name="timespanbtn">3 Monthes</input>
-          </div>
+          <input type="radio" value="7" name="timespan">1 week</input>
+          <input type="radio" value="30" name="timespan">1 Month</input>
+          <input type="radio" value="90" name="timespan">3 Monthes</input>
           <hr>
           <input id="showReport" type="checkbox">show visits report</input>
         </td>
