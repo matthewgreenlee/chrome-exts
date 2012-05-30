@@ -36,7 +36,17 @@ HD.save = function () {
       localStorage[HD.radios[i].name] = HD.radios[i].value;
     }
   }
+  
+  HD.showMessage("options saved");
 };
+
+HD.showMessage = function (msg) {
+  var msgdiv = $("#message");
+  msgdiv.html(msg);
+  msgdiv.show("fast", function() {
+    msgdiv.hide("slow");
+  });
+}
 
 HD.close = function () {
   window.close();
