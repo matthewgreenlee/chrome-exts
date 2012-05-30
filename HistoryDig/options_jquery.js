@@ -1,43 +1,43 @@
-$(document).ready(function() {
-  HD.restore();
+$(document).ready(function () {
   $("#save").click(HD.save);
   $("#close").click(HD.close);
+  HD.checkboxes = $(":input[type='checkbox']");
+  HD.radios = $("input:radio");
+  HD.restore();
 });
 
-var HD = {
-  restore: function() {
-    var checkboxes = $(":input[type='checkbox']");
-    for (var i in checkboxes) {
-      if (localStorage[checkboxes[i].id] === "true") {
-        checkboxes[i].checked = true;
-      }
+var HD = {};
+
+HD.restore = function () {
+  for (var i in HD.checkboxes) {
+    if (localStorage[HD.checkboxes[i].id] === "true") {
+      HD.checkboxes[i].checked = true;
     }
-	
-	var radios = $("input:radio");
-	for (var i in radios) {
-	  if (localStorage[radios[i].name] === radios[i].value) {
-	    radios[i].checked = true;
-	  }
-	}
-  },
-  save: function() {
-    var checkboxes = $(":input[type='checkbox']");
-    for (var i in checkboxes) {
-      if (checkboxes[i].checked === true) {
-        localStorage[checkboxes[i].id] = "true";
-      } else {
-        localStorage[checkboxes[i].id] = "false";
-	  }
-    }
-	
-	var radios = $("input:radio");
-	for (var i in radios) {
-	  if (radios[i].checked === true) {
-	    localStorage[radios[i].name] = radios[i].value;
-	  }
-	}
-  },
-  close: function() {
-    window.close();
   }
-}
+
+  for (var i in HD.radios) {
+    if (localStorage[HD.radios[i].name] === HD.radios[i].value) {
+      HD.radios[i].checked = true;
+    }
+  }
+};
+
+HD.save = function () {
+  for (var i in HD.checkboxes) {
+    if (HD.checkboxes[i].checked === true) {
+      localStorage[HD.checkboxes[i].id] = "true";
+    } else {
+      localStorage[HD.checkboxes[i].id] = "false";
+    }
+  }
+
+  for (var i in HD.radios) {
+    if (HD.radios[i].checked === true) {
+      localStorage[HD.radios[i].name] = HD.radios[i].value;
+    }
+  }
+};
+
+HD.close = function () {
+  window.close();
+};
