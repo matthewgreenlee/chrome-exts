@@ -38,6 +38,10 @@ HD.save = function () {
   }
   
   HD.showMessage("options saved");
+  
+  if ($("#showReport:first").attr("checked") === true) {
+    HD.generateReport();
+  }
 };
 
 HD.showMessage = function (msg) {
@@ -46,8 +50,12 @@ HD.showMessage = function (msg) {
   msgdiv.show("fast", function() {
     msgdiv.hide("slow");
   });
-}
+};
 
 HD.close = function () {
   window.close();
+};
+
+HD.generateReport = function () {
+  $("body").append("<table id='visitsReport'>"); 
 };
