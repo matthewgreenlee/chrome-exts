@@ -9,17 +9,21 @@ $(document).ready(function () {
 var HD = {};
 
 HD.restore = function () {
-  for (var i in HD.checkboxes) {
-    if (localStorage[HD.checkboxes[i].id] === "true") {
-      HD.checkboxes[i].checked = true;
+  HD.checkboxes.attr("checked", function(index, attr) {
+    if (localStorage[this.id] === "true") {
+      return true;
+    } else {
+      return false;
     }
-  }
+  });
 
-  for (var i in HD.radios) {
-    if (localStorage[HD.radios[i].name] === HD.radios[i].value) {
-      HD.radios[i].checked = true;
+  HD.radios.attr("checked", function(index, attr) {
+    if (localStorage[this.name] === this.value) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  });
 };
 
 HD.save = function () {
