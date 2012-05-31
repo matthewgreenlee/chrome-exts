@@ -9,37 +9,25 @@ $(document).ready(function () {
 var HD = {};
 
 HD.restore = function () {
-  HD.checkboxes.attr("checked", function(index, attr) {
-    if (localStorage[this.id] === "true") {
-      return true;
-    } else {
-      return false;
-    }
+  HD.checkboxes.attr("checked", function() {
+    return localStorage[this.id] === "true" ? true: false;
   });
 
-  HD.radios.attr("checked", function(index, attr) {
-    if (localStorage[this.name] === this.value) {
-      return true;
-    } else {
-      return false;
-    }
+  HD.radios.attr("checked", function() {
+    return localStorage[this.name] === this.value ? true: false;
   });
 };
 
 HD.save = function () {
-  for (var i in HD.checkboxes) {
-    if (HD.checkboxes[i].checked === true) {
-      localStorage[HD.checkboxes[i].id] = "true";
-    } else {
-      localStorage[HD.checkboxes[i].id] = "false";
-    }
-  }
+  HD.checkboxes.each(function() {
+    this.checked === true ? localStorage[this.id] = "true": localStorage[this.id] = "false";
+  });
 
-  for (var i in HD.radios) {
-    if (HD.radios[i].checked === true) {
-      localStorage[HD.radios[i].name] = HD.radios[i].value;
+  HD.radios.each(function() {
+    if (this.checked === true) {
+      localStorage[this.name] = this.value;
     }
-  }
+  });
   
   HD.showMessage("options saved");
   
