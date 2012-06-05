@@ -55,17 +55,26 @@
           <input type="radio" value="30" name="timespan">1 Month</input>
           <input type="radio" value="90" name="timespan">3 Monthes</input>
           <hr>
-          <input id="showReport" type="checkbox">show visits report</input>
         </td>
       </tr>
       <tr>
         <td colspan="2" class="right">
+          <input id="showReport" type="button" class="button" value="Show Report" />
           <input id="save" type="button" class="button" value="Save" />
           <input id="close" type="button" class="button" value="Close" />
         </td>
       </tr>
     </table>
     <div id="message"></div>
+	<table id="visitsReport" class="center">
+		<tr>
+			<th>Title</th>
+			<th>Location</th>
+			<th>URL</th>
+			<th>Visits</th>
+			<th>Action</th>
+		</tr>
+	</table>
   </body>
 
 </html>

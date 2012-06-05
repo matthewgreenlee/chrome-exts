@@ -1,6 +1,8 @@
 $(document).ready(function () {
   $("#save").click(HD.save);
   $("#close").click(HD.close);
+  $("#showReport").click(HD.generateReport);
+  $("#visitsReport").hide();
   HD.checkboxes = $(":input[type='checkbox']");
   HD.radios = $("input:radio");
   HD.restore();
@@ -29,11 +31,7 @@ HD.save = function () {
     }
   });
   
-  HD.showMessage("options saved");
-  
-  if ($("#showReport:first").attr("checked") === true) {
-    HD.generateReport();
-  }
+  HD.showMessage("options saved"); 
 };
 
 HD.showMessage = function (msg) {
@@ -49,5 +47,5 @@ HD.close = function () {
 };
 
 HD.generateReport = function () {
-  $("body").append("<table id='visitsReport'>"); 
+//  $("body").append("<table id='visitsReport'>"); 
 };
