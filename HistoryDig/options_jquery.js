@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  $("#save").click(HD.save);
-  $("#close").click(HD.close);
-  $("#showReport").click(HD.generateReport);
+  $("#saveBtn").click(HD.save);
+  $("#closeBtn").click(HD.close);
+  $("#reportBtn").click(HD.generateReport);
   $("#visitsReport").hide();
   HD.checkboxes = $(":input[type='checkbox']");
   HD.radios = $("input:radio");
@@ -47,5 +47,35 @@ HD.close = function () {
 };
 
 HD.generateReport = function () {
-//  $("body").append("<table id='visitsReport'>"); 
+  $("#visitsReport").show();
+  var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpTreeNodes);
+};
+
+HD.dumpTreeNodes = function (bookmarkTreeNodes) {
+  for (var i in bookmarkTreeNodes) {
+    if (HD.nodeIsFolder(bookmarkTreeNodes[i])) {
+	  HD.dumpTreeNodes(bookmarkTreeNodes[i].children);
+	} else {
+      var row = HD.dumpNode(bookmarkTreeNodes[i]);
+      $("#visitsReport").append(row);
+	}
+  }
+};
+
+HD.nodeIsFolder = function (bookmarkTreeNode) {
+  return bookmarkTreeNode.url === undefined? true: false;
+};
+
+HD.dumpNode = function (bookmarkTreeNode) {
+  var row = $("<tr>");
+  row.append(HD.newTd(bookmarkTreeNode.title));
+  row.append(HD.newTd("unknown"));
+  row.append(HD.newTd(bookmarkTreeNode.url));
+  row.append(HD.newTd(0));
+  row.append($("<td>").append($("<a>").text("Edit")));
+  return row;
+};
+
+HD.newTd = function (text) {
+  return $("<td>").text(text);
 };

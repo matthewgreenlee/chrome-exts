@@ -1,18 +1,13 @@
 /* generic html tag style */
 body {
-padding:0 17% 0 17%;
-}
-ul {
-list-style-type:none;
-padding-left:20px;
-}
-li {
-padding: 3px 0;
+padding: 0 17% 0 17%;
 }
 table, th, td {
-border:1px solid #ABC;
+border: 1px solid #ABC;
 }
 table {
+table-layout: fixed;
+width: 100%;
 border-collapse:collapse;
 margin-top:50px;
 margin-bottom:50px;
@@ -21,8 +16,12 @@ color:#567;
 th, td {
 padding:5px 15px 5px 15px;
 }
-th {
-font-size:30px;
+ul {
+list-style-type:none;
+padding-left:20px;
+}
+li {
+padding: 3px 0;
 }
 
 /* generic class style */
@@ -46,10 +45,3 @@ color:#567;
 }
 
 /* specific element style */
-#optionsBody {
-border:1px solid;
-padding:15px 5px 15px 5px;
-}
-#wb_follow_btn {
-display: block;
-}

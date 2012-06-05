@@ -8,13 +8,13 @@
   </head>
   
   <body>
-    <table id="optionsBody" class="center">
+    <table id="optionsBody">
       <tr>
         <th colspan="2">History Dig Options</th>
       </tr>
       <tr>
         <td width="67%">
-          <ul class="left">
+          <ul>
             <li>
               <input id="transitionLink" type="checkbox">by clicking a link on another page</input>
             </li>
@@ -54,19 +54,18 @@
           <input type="radio" value="7" name="timespan">1 week</input>
           <input type="radio" value="30" name="timespan">1 Month</input>
           <input type="radio" value="90" name="timespan">3 Monthes</input>
-          <hr>
         </td>
       </tr>
       <tr>
-        <td colspan="2" class="right">
-          <input id="showReport" type="button" class="button" value="Show Report" />
-          <input id="save" type="button" class="button" value="Save" />
-          <input id="close" type="button" class="button" value="Close" />
+        <td colspan="2">
+          <input id="reportBtn" type="button" class="button" value="Show Report" />
+          <input id="saveBtn" type="button" class="button" value="Save" />
+          <input id="closeBtn" type="button" class="button" value="Close" />
         </td>
       </tr>
     </table>
     <div id="message"></div>
-	<table id="visitsReport" class="center">
+	<table id="visitsReport">
 		<tr>
 			<th>Title</th>
 			<th>Location</th>
