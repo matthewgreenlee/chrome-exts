@@ -15,6 +15,7 @@ color:#567;
 }
 th, td {
 padding:5px 15px 5px 15px;
+overflow: auto;
 }
 ul {
 list-style-type:none;
@@ -45,3 +46,21 @@ color:#567;
 }
 
 /* specific element style */
+th:first-child {
+width: 20%;
+}
+th:nth-child(2) {
+width: 10%;
+}
+th:nth-child(3) {
+width: 50%;
+}
+th:nth-child(4) {
+width: 10%;
+}
+th:last-child {
+width: 10%;
+}
+#optionsBody>tbody>tr>td {
+width: 40%;
+}

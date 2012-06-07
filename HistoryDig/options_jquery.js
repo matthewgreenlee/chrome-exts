@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $("#saveBtn").click(HD.save);
   $("#closeBtn").click(HD.close);
-  $("#reportBtn").click(HD.generateReport);
+  $("#reportBtn").click(HD.showReport);
   $("#visitsReport").hide();
   HD.checkboxes = $(":input[type='checkbox']");
   HD.radios = $("input:radio");
@@ -46,10 +46,21 @@ HD.close = function () {
   window.close();
 };
 
-HD.generateReport = function () {
+HD.showReport = function () {
   $("#visitsReport").show();
-  var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpTreeNodes);
+  var theFirstTime = $("#visitsReport").has("td").length? false: true;
+  if (theFirstTime === true) {
+    var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpTreeNodes);
+  }
+  $("#reportBtn").val("Hide Report");
+  $("#reportBtn").click(HD.hideReport);
 };
+
+HD.hideReport = function () {
+  $("#visitsReport").hide();
+  $("#reportBtn").val("Show Report");
+  $("#reportBtn").click(HD.showReport);
+}
 
 HD.dumpTreeNodes = function (bookmarkTreeNodes) {
   for (var i in bookmarkTreeNodes) {
