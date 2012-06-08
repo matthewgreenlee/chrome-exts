@@ -33,11 +33,9 @@ text-align:center;
 }
 .left {
 float:left;
-text-align:left;
 }
 .right {
 float:right;
-text-align:right;
 }
 .button {
 min-width:120px;
