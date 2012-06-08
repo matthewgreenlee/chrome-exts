@@ -44,23 +44,29 @@ min-width:120px;
 min-height:33px;
 color:#567;
 }
+.checkboxOptions {
+width: 60%;
+}
 
 /* specific element style */
-th:first-child {
+#optionsBody th:first-child {
+width: 67%;
+}
+#optionsBody th:last-child {
+width: 33%;
+}
+#visitsReport th:first-child {
 width: 20%;
 }
-th:nth-child(2) {
+#visitsReport th:nth-child(2) {
 width: 10%;
 }
-th:nth-child(3) {
+#visitsReport th:nth-child(3) {
 width: 50%;
 }
-th:nth-child(4) {
+#visitsReport th:nth-child(4) {
 width: 10%;
 }
-th:last-child {
+#visitsReport th:last-child {
 width: 10%;
-}
-#optionsBody>tbody>tr>td {
-width: 40%;
 }
