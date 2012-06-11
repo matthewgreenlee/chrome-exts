@@ -62,9 +62,12 @@ HD.hideReport = function () {
   $("#reportBtn").click(HD.showReport);
 }
 
+HD.bookmarkFolders = {};
+
 HD.dumpTreeNodes = function (bookmarkTreeNodes) {
   for (var i in bookmarkTreeNodes) {
     if (HD.nodeIsFolder(bookmarkTreeNodes[i])) {
+	  HD.bookmarkFolders[bookmarkTreeNodes[i].id] = bookmarkTreeNodes[i].title;
 	  HD.dumpTreeNodes(bookmarkTreeNodes[i].children);
 	} else {
       var row = HD.dumpNode(bookmarkTreeNodes[i]);
@@ -80,7 +83,7 @@ HD.nodeIsFolder = function (bookmarkTreeNode) {
 HD.dumpNode = function (bookmarkTreeNode) {
   var row = $("<tr>");
   row.append(HD.newTd(bookmarkTreeNode.title));
-  row.append(HD.newTd("unknown"));
+  row.append(HD.newTd(HD.bookmarkFolders[bookmarkTreeNode.parentId]));
   row.append(HD.newTd(bookmarkTreeNode.url));
   row.append(HD.newTd(0));
   row.append($("<td>").append($("<a>").text("Edit")));
