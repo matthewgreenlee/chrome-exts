@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   $("#saveBtn").click(HD.save);
   $("#closeBtn").click(HD.close);
   $("#reportBtn").click(HD.showReport);
@@ -72,6 +72,7 @@ HD.dumpTreeNodes = function (bookmarkTreeNodes) {
 	} else {
       var row = HD.dumpNode(bookmarkTreeNodes[i]);
       $("#visitsReport").append(row);
+	  HD.getVisits(bookmarkTreeNodes[i]);
 	}
   }
 };
@@ -81,14 +82,24 @@ HD.nodeIsFolder = function (bookmarkTreeNode) {
 };
 
 HD.dumpNode = function (bookmarkTreeNode) {
-  var row = $("<tr>");
+  var row = $("<tr>").attr("id", bookmarkTreeNode.id);
   row.append(HD.newTd(bookmarkTreeNode.title));
   row.append(HD.newTd(HD.bookmarkFolders[bookmarkTreeNode.parentId]));
   row.append(HD.newTd(bookmarkTreeNode.url));
-  row.append(HD.newTd(0));
+  // put an empty string as place holder before get real data
+  row.append(HD.newTd(""));
   row.append($("<td>").append($("<a>").text("Edit")));
   return row;
 };
+
+HD.getVisits = function (bookmarkTreeNode) {
+  chrome.history.getVisits({
+    'url': bookmarkTreeNode.url
+    }, function (visitItems) {
+	  // locate visits cell based on bookmarkTreeNode.id
+	  $("tr[id=" + bookmarkTreeNode.id + "] td:nth-child(4)").text(visitItems.length);
+  });
+}
 
 HD.newTd = function (text) {
   return $("<td>").text(text);
