@@ -117,7 +117,10 @@ HD.saveBookmark = function(event) {
 
 HD.deleteBookmark = function(event) {
     event.preventDefault();
-    confirm("please confirm your deletion");
+    var confirmed = confirm("please confirm your deletion");
+	if (!confirmed) {
+		return;
+	}
     var id = $(this).parents("tr").attr("id");
     chrome.bookmarks.remove(id, function() {
         $("tr[id=" + id + "]").remove();
