@@ -98,7 +98,7 @@ HD.getVisits = function(bookmarkTreeNode) {
     }, function(visitItems) {
         // locate visits cell based on bookmarkTreeNode.id
         $("tr[id=" + bookmarkTreeNode.id + "] td:nth-child(4)").text(visitItems.length);
-        $("tr[id=" + bookmarkTreeNode.id + "] td:last-child a:first-child").click(HD.editBookmark);
+        $("tr[id=" + bookmarkTreeNode.id + "] td:last-child a:first-child").toggle(HD.editBookmark, HD.saveBookmark);
         $("tr[id=" + bookmarkTreeNode.id + "] td:last-child a:last-child").click(HD.deleteBookmark);
     });
 };
@@ -106,21 +106,29 @@ HD.getVisits = function(bookmarkTreeNode) {
 HD.editBookmark = function(event) {
     event.preventDefault();
     $(this).text("Save");
-    $(this).click(HD.saveBookmark);
+    var id = $(this).parents("tr").attr("id");
+    var text = $(this).parents("tr").children(":nth-child(3)").text();
+    $(this).parents("tr").children(":nth-child(3)").contents().replaceWith("<input type='text' value='" + text + "' />");
 };
 
 HD.saveBookmark = function(event) {
     event.preventDefault();
+    var id = $(this).parents("tr").attr("id");
+    var url = $("tr[id=" + id + "] :input").filter(":last").val()
     $(this).text("Edit");
-    $(this).click(HD.editBookmark);
+    chrome.bookmarks.update(id, {
+        'url': url
+    }, function() {
+        $("tr[id=" + id + "] :input").filter(":last").replaceWith("<div>" + url + "</div>");
+    });
 };
 
 HD.deleteBookmark = function(event) {
     event.preventDefault();
     var confirmed = confirm("please confirm your deletion");
-	if (!confirmed) {
-		return;
-	}
+    if (!confirmed) {
+        return;
+    }
     var id = $(this).parents("tr").attr("id");
     chrome.bookmarks.remove(id, function() {
         $("tr[id=" + id + "]").remove();
