@@ -71,8 +71,10 @@ HD.dumpTreeNodes = function(bookmarkTreeNodes) {
             HD.dumpTreeNodes(bookmarkTreeNodes[i].children);
         } else {
             var row = HD.dumpNode(bookmarkTreeNodes[i]);
-            $("#visitsReport").append(row);
-            HD.getVisits(bookmarkTreeNodes[i]);
+            $("#visitsReport").append(row);			
+//            HD.getVisits(bookmarkTreeNodes[i]);
+			$(row).children("td:last-child").children("a:first-child").toggle(HD.editBookmark, HD.saveBookmark);
+			$(row).children("td:last-child").children("a:last-child").click(HD.deleteBookmark);
         }
     }
 };
@@ -87,8 +89,8 @@ HD.dumpNode = function(bookmarkTreeNode) {
     row.append(HD.newTd(HD.bookmarkFolders[bookmarkTreeNode.parentId]));
     row.append(HD.newTd(bookmarkTreeNode.url));
     // put an empty string as place holder before get real data
-    row.append(HD.newTd(""));
-    row.append($("<td>").append($("<a href='about:blank'>").text("Edit"), $("<a href='about:blank'>").text("Delete")));
+//    row.append(HD.newTd(""));
+    row.append($("<td>").append($("<a href='about:blank'>").text("Edit"), $("<a href='about:blank'>").text("Delete")));	
     return row;
 };
 
@@ -98,8 +100,6 @@ HD.getVisits = function(bookmarkTreeNode) {
     }, function(visitItems) {
         // locate visits cell based on bookmarkTreeNode.id
         $("tr[id=" + bookmarkTreeNode.id + "] td:nth-child(4)").text(visitItems.length);
-        $("tr[id=" + bookmarkTreeNode.id + "] td:last-child a:first-child").toggle(HD.editBookmark, HD.saveBookmark);
-        $("tr[id=" + bookmarkTreeNode.id + "] td:last-child a:last-child").click(HD.deleteBookmark);
     });
 };
 
@@ -107,6 +107,7 @@ HD.editBookmark = function(event) {
     event.preventDefault();
     $(this).text("Save");
     var id = $(this).parents("tr").attr("id");
+	// change points
     var text = $(this).parents("tr").children(":nth-child(3)").text();
     $(this).parents("tr").children(":nth-child(3)").contents().replaceWith("<input type='text' value='" + text + "' />");
 };
