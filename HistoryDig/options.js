@@ -64,30 +64,33 @@ HD.hideReport = function() {
 
 HD.bookmarkFolders = {};
 
+HD.numberOfBookmarks = 0;
+
 HD.dumpBookmarks = function(bookmarkTreeNodes) {
     for (var i in bookmarkTreeNodes) {
-        if (HD.nodeIsFolder(bookmarkTreeNodes[i])) {
-            HD.bookmarkFolders[bookmarkTreeNodes[i].id] = bookmarkTreeNodes[i].title;
-            HD.dumpBookmarks(bookmarkTreeNodes[i].children);
-        } else {
-            var row = HD.dumpBookmark(bookmarkTreeNodes[i]);
-            $("#visitsReport").append(row);
-            //            HD.getVisits(bookmarkTreeNodes[i]);
-        }
+		HD.dumpBookmark(bookmarkTreeNodes[i]);
     }
 };
 
-HD.nodeIsFolder = function(bookmarkTreeNode) {
-    return bookmarkTreeNode.url === undefined ? true : false;
-};
-
 HD.dumpBookmark = function(bookmarkTreeNode) {
-    var row = $("<tr>").attr("id", bookmarkTreeNode.id);
-    row.append($("<td>").append($("<div class='title' />").html(bookmarkTreeNode.title)));
-    row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
-    row.append($("<td>").append($("<div class='url' />").html(bookmarkTreeNode.url)));
-    row.append($("<td>").append($("<div class='action' />").append($("<a href=''>").text("Edit").toggle(HD.editBookmark, HD.saveBookmark), $("<a href=''>").text("Delete").click(HD.deleteBookmark))));
-    return row;
+	if (!bookmarkTreeNode.parentId) {
+		HD.bookmarkRootNode = bookmarkTreeNode;
+	}
+	if (!bookmarkTreeNode.url) {
+		HD.bookmarkFolders[bookmarkTreeNode.id] = bookmarkTreeNode.title;
+		HD.dumpBookmarks(bookmarkTreeNode.children);
+	} else {
+		if (HD.numberOfBookmarks >= 10) {
+			return;
+		}
+		var row = $("<tr>").attr("id", bookmarkTreeNode.id);
+		row.append($("<td>").append($("<div class='title' />").html(bookmarkTreeNode.title)));
+		row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
+		row.append($("<td>").append($("<div class='url' />").html(bookmarkTreeNode.url)));
+		row.append($("<td>").append($("<div class='action' />").append($("<a href=''>").text("Edit").toggle(HD.editBookmark, HD.saveBookmark), $("<a href=''>").text("Delete").click(HD.deleteBookmark))));
+		$("#visitsReport").append(row);
+		HD.numberOfBookmarks += 1;
+	}
 };
 
 HD.getVisits = function(bookmarkTreeNode) {
