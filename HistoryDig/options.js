@@ -50,7 +50,12 @@ HD.showReport = function() {
     $("#visitsReport").show();
     var theFirstTime = $("#visitsReport").has("td").length ? false : true;
     if (theFirstTime === true) {
-        var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpBookmarks);
+        var bookmarkTreeNodes = chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
+			HD.dumpBookmarks(bookmarkTreeNodes);
+			if (HD.numberOfBookmarks >= 10) {
+				$("#visitsReport").after("<input type='button' class='center button' value='Show More ...' />");
+			}
+		});
     }
     $("#reportBtn").val("Hide Report");
     $("#reportBtn").click(HD.hideReport);
@@ -73,6 +78,9 @@ HD.dumpBookmarks = function(bookmarkTreeNodes) {
 };
 
 HD.dumpBookmark = function(bookmarkTreeNode) {
+	if (HD.numberOfBookmarks >= 10) {
+		return;
+	}
 	if (!bookmarkTreeNode.parentId) {
 		HD.bookmarkRootNode = bookmarkTreeNode;
 	}
@@ -80,9 +88,6 @@ HD.dumpBookmark = function(bookmarkTreeNode) {
 		HD.bookmarkFolders[bookmarkTreeNode.id] = bookmarkTreeNode.title;
 		HD.dumpBookmarks(bookmarkTreeNode.children);
 	} else {
-		if (HD.numberOfBookmarks >= 10) {
-			return;
-		}
 		var row = $("<tr>").attr("id", bookmarkTreeNode.id);
 		row.append($("<td>").append($("<div class='title' />").html(bookmarkTreeNode.title)));
 		row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
@@ -135,8 +140,8 @@ HD.deleteBookmark = function(event) {
     if (!confirmed) {
         return;
     }
-    var id = $(this).parents("tr").attr("id");
-    chrome.bookmarks.remove(id, function() {
-        $("tr[id=" + id + "]").remove();
+	var row = $(this).parents("tr");
+    chrome.bookmarks.remove(row.attr("id"), function() {
+        row.remove();
     });
 };
