@@ -50,7 +50,7 @@ HD.showReport = function() {
     $("#visitsReport").show();
     var theFirstTime = $("#visitsReport").has("td").length ? false : true;
     if (theFirstTime === true) {
-        var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpTreeNodes);
+        var bookmarkTreeNodes = chrome.bookmarks.getTree(HD.dumpBookmarks);
     }
     $("#reportBtn").val("Hide Report");
     $("#reportBtn").click(HD.hideReport);
@@ -64,17 +64,15 @@ HD.hideReport = function() {
 
 HD.bookmarkFolders = {};
 
-HD.dumpTreeNodes = function(bookmarkTreeNodes) {
+HD.dumpBookmarks = function(bookmarkTreeNodes) {
     for (var i in bookmarkTreeNodes) {
         if (HD.nodeIsFolder(bookmarkTreeNodes[i])) {
             HD.bookmarkFolders[bookmarkTreeNodes[i].id] = bookmarkTreeNodes[i].title;
-            HD.dumpTreeNodes(bookmarkTreeNodes[i].children);
+            HD.dumpBookmarks(bookmarkTreeNodes[i].children);
         } else {
-            var row = HD.dumpNode(bookmarkTreeNodes[i]);
+            var row = HD.dumpBookmark(bookmarkTreeNodes[i]);
             $("#visitsReport").append(row);
             //            HD.getVisits(bookmarkTreeNodes[i]);
-            $(row).children("td:last-child").children("a:first-child").toggle(HD.editBookmark, HD.saveBookmark);
-            $(row).children("td:last-child").children("a:last-child").click(HD.deleteBookmark);
         }
     }
 };
@@ -83,12 +81,12 @@ HD.nodeIsFolder = function(bookmarkTreeNode) {
     return bookmarkTreeNode.url === undefined ? true : false;
 };
 
-HD.dumpNode = function(bookmarkTreeNode) {
+HD.dumpBookmark = function(bookmarkTreeNode) {
     var row = $("<tr>").attr("id", bookmarkTreeNode.id);
     row.append($("<td>").append($("<div class='title' />").html(bookmarkTreeNode.title)));
     row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
     row.append($("<td>").append($("<div class='url' />").html(bookmarkTreeNode.url)));
-    row.append($("<td>").append($("<a href=''>").text("Edit"), $("<a href=''>").text("Delete")));
+    row.append($("<td>").append($("<div class='action' />").append($("<a href=''>").text("Edit").toggle(HD.editBookmark, HD.saveBookmark), $("<a href=''>").text("Delete").click(HD.deleteBookmark))));
     return row;
 };
 
@@ -121,9 +119,9 @@ HD.saveBookmark = function(event) {
         'url': url
     }, function() {
         $(row).find(".title, .location, .url").html(function(index, oldhtml) {
-            return $(oldhtml).val();
+            return $(this).children(":input").val();
         });
-        $(row).children(":nth-child(4)").children("a:first-child").text("Edit");
+		$(row).find(".action a:first-child").text("Edit");
         ;
     });
 };
