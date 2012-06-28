@@ -51,11 +51,11 @@ HD.showReport = function() {
     var theFirstTime = $("#visitsReport").has("td").length ? false : true;
     if (theFirstTime === true) {
         var bookmarkTreeNodes = chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
-			HD.dumpBookmarks(bookmarkTreeNodes);
-			if (HD.numberOfBookmarks >= 10) {
-				$("#visitsReport").after("<input type='button' class='center button' value='Show More ...' />");
-			}
-		});
+            HD.dumpBookmarks(bookmarkTreeNodes);
+            if (HD.numberOfBookmarks >= 10) {
+                $("#visitsReport").after("<input type='button' class='center button' value='Show More ...' />");
+            }
+        });
     }
     $("#reportBtn").val("Hide Report");
     $("#reportBtn").click(HD.hideReport);
@@ -73,47 +73,41 @@ HD.numberOfBookmarks = 0;
 
 HD.dumpBookmarks = function(bookmarkTreeNodes) {
     for (var i in bookmarkTreeNodes) {
-		HD.dumpBookmark(bookmarkTreeNodes[i]);
+        HD.dumpBookmark(bookmarkTreeNodes[i]);
     }
 };
 
 HD.dumpBookmark = function(bookmarkTreeNode) {
-	if (HD.numberOfBookmarks >= 10) {
-		return;
-	}
-	if (!bookmarkTreeNode.parentId) {
-		HD.bookmarkRootNode = bookmarkTreeNode;
-	}
-	if (!bookmarkTreeNode.url) {
-		HD.bookmarkFolders[bookmarkTreeNode.id] = bookmarkTreeNode.title;
-		HD.dumpBookmarks(bookmarkTreeNode.children);
-	} else {
-		var row = $("<tr>").attr("id", bookmarkTreeNode.id);
-		row.append($("<td>").append($("<div class='title' />").html(bookmarkTreeNode.title)));
-		row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
-		row.append($("<td>").append($("<div class='url' />").html(bookmarkTreeNode.url)));
-		row.append($("<td>").append($("<div class='action' />").append($("<a href=''>").text("Edit").toggle(HD.editBookmark, HD.saveBookmark), $("<a href=''>").text("Delete").click(HD.deleteBookmark))));
-		$("#visitsReport").append(row);
-		HD.numberOfBookmarks += 1;
-	}
-};
-
-HD.getVisits = function(bookmarkTreeNode) {
-    chrome.history.getVisits({
-        'url': bookmarkTreeNode.url
-    }, function(visitItems) {
-        // locate visits cell based on bookmarkTreeNode.id
-        $("tr[id=" + bookmarkTreeNode.id + "] td:nth-child(4)").text(visitItems.length);
-    });
+    if (HD.numberOfBookmarks >= 10) {
+        return;
+    }
+    if (!bookmarkTreeNode.parentId) {
+        HD.bookmarkRootNode = bookmarkTreeNode;
+    }
+    if (!bookmarkTreeNode.url) {
+        HD.bookmarkFolders[bookmarkTreeNode.id] = bookmarkTreeNode.title;
+        HD.dumpBookmarks(bookmarkTreeNode.children);
+    } else {
+        var row = $("<tr>").attr("id", bookmarkTreeNode.id);
+        row.append($("<td>").append($("<div class='title' />").append($("<a>").html(bookmarkTreeNode.title))));
+        row.append($("<td>").append($("<div class='location' />").html(HD.bookmarkFolders[bookmarkTreeNode.parentId])));
+        row.append($("<td>").append($("<div class='url' />").append($("<a>").html(bookmarkTreeNode.url).attr("href", bookmarkTreeNode.url))));
+        row.append($("<td>").append($("<div class='action' />").append($("<a href=''>").html("Edit").toggle(HD.editBookmark, HD.saveBookmark), $("<a href=''>").html("Delete").click(HD.deleteBookmark))));
+        $("#visitsReport").append(row);
+        HD.numberOfBookmarks += 1;
+    }
 };
 
 HD.editBookmark = function(event) {
     event.preventDefault();
     var row = $(this).parents("tr");
-    row.find(".title, .location, .url").html(function(index, oldhtml) {
+    row.find(".title a, .location").html(function(index, oldhtml) {
         return "<input type='text' value='" + oldhtml + "' />";
     });
-    $(this).text("Save");
+    row.find(".url a").replaceWith(function() {
+        return "<input type='text' value='" + $(this).html() + "' />";
+    });
+    $(this).html("Save");
 };
 
 HD.saveBookmark = function(event) {
@@ -126,10 +120,13 @@ HD.saveBookmark = function(event) {
         'title': title,
         'url': url
     }, function() {
-        $(row).find(".title, .location, .url").html(function(index, oldhtml) {
-            return $(this).children(":input").val();
+        $(row).find(".title a, .location").html(function(index, oldhtml) {
+            return $(this).find(":input").val();
         });
-		$(row).find(".action a:first-child").text("Edit");
+        $(row).find(".url :input").replaceWith(function() {
+            return $("<a>").html(url).attr("href", url);
+        });
+        $(row).find(".action a:first-child").html("Edit");
         ;
     });
 };
@@ -140,8 +137,17 @@ HD.deleteBookmark = function(event) {
     if (!confirmed) {
         return;
     }
-	var row = $(this).parents("tr");
+    var row = $(this).parents("tr");
     chrome.bookmarks.remove(row.attr("id"), function() {
         row.remove();
+    });
+};
+
+HD.getVisits = function(bookmarkTreeNode) {
+    chrome.history.getVisits({
+        'url': bookmarkTreeNode.url
+    }, function(visitItems) {
+        // locate visits cell based on bookmarkTreeNode.id
+        $("tr[id=" + bookmarkTreeNode.id + "] td:nth-child(4)").html(visitItems.length);
     });
 };
