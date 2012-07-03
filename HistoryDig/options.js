@@ -1,7 +1,7 @@
 $(function() {
     $("#saveBtn").click(HD.save);
     $("#closeBtn").click(HD.close);
-    $("#reportBtn").click(HD.showReport);
+    $("#reportBtn").toggle(HD.showReport, HD.hideReport);
     $("#visitsReport").hide();
     HD.checkboxes = $(":input[type='checkbox']");
     HD.radios = $("input:radio");
@@ -58,13 +58,11 @@ HD.showReport = function() {
         });
     }
     $("#reportBtn").val("Hide Report");
-    $("#reportBtn").click(HD.hideReport);
 };
 
 HD.hideReport = function() {
     $("#visitsReport").hide();
     $("#reportBtn").val("Show Report");
-    $("#reportBtn").click(HD.showReport);
 };
 
 HD.bookmarkFolders = {};
