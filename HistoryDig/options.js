@@ -48,17 +48,25 @@ HD.close = function() {
 
 HD.showReport = function() {
     $("#visitsReport").show();
-    var theFirstTime = $("#visitsReport").has("td").length ? false : true;
-    if (theFirstTime === true) {
-        var bookmarkTreeNodes = chrome.bookmarks.getTree(function(bookmarkTreeNodes) {
-            HD.dumpBookmarks(bookmarkTreeNodes);
+    $("#reportBtn").val("Hide Report");
+    if (!HD.bookmarkTreeNodes) {
+        var bookmarkTreeNodes = chrome.bookmarks.getTree(function(results) {
+			HD.bookmarkTreeNodes = results;
+            HD.dumpBookmarks(HD.bookmarkTreeNodes);
             if (HD.numberOfBookmarks >= 10) {
                 $("#visitsReport").after("<input type='button' class='center button' value='Show More ...' />");
             }
         });
     }
-    $("#reportBtn").val("Hide Report");
 };
+
+HD.getBookmarkTreeNodes = function() {
+	if (!HD.bookmarkTreeNodes) {
+		chrome.bookmarks.getTree(function(results) {
+			HD.bookmarkTreeNodes = results;
+		});
+	}
+}
 
 HD.hideReport = function() {
     $("#visitsReport").hide();
